@@ -5,7 +5,7 @@
 #!correr interfaz.sh consolidado.sh
 
 #!correr interfaz.sh -d
-
+numero=""
 echo "1) Crear entorno"
 echo "2) Correr proceso de consolidar"
 echo "3) Listado de alumnos por orden de padrón"
@@ -15,7 +15,7 @@ echo "6) Visualizar logs"
 echo "7) Salir"
 
 
-until [ "$numero" -eq 7 ]; do
+until [ "$numero" = '7' ]; do
 
 echo -n "Ingrese un número: "
 
@@ -28,6 +28,7 @@ case "$numero" in
 	4) echo "Elegiste la opción 4";;
 	5) echo "Elegiste la opción 5";;
 	6) echo "Elegiste la opción 6";;
+	7) echo "Saliendo del menú" ;;
 
     *) 
     echo "Opción inválida. Ingrese un número del 1 al 7.";;
