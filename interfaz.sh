@@ -1,6 +1,6 @@
 #!/bin/bash
 
-#!correr interfaz.sh 
+#!correr interfaz.sh
 
 #!correr interfaz.sh consolidado.sh
 
@@ -22,7 +22,12 @@ echo -n "Ingrese un número: "
 read numero
 
 case "$numero" in
-	1) echo "Elegiste la opción 1";;
+	1) echo "Elegiste la opción 1"
+		mkdir $HOME/EPNro1
+		touch $HOME/EPNro1/entrada
+		touch $HOME/EPNro1/salida
+		touch $HOME/EPNro1/procesado;;
+
 	2) echo "Elegiste la opción 2";;
 	3) echo "Elegiste la opción 3" ;;
 	4) echo "Elegiste la opción 4";;
@@ -30,9 +35,9 @@ case "$numero" in
 	6) echo "Elegiste la opción 6";;
 	7) echo "Saliendo del menú" ;;
 
-    *) 
+    *)
     echo "Opción inválida. Ingrese un número del 1 al 7.";;
-    esac    
+    esac
 done
 
 echo "Se termino proceso, saliendo."
