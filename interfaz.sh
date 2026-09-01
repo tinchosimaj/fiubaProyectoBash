@@ -1,10 +1,6 @@
 #!/bin/bash
+ARCHIVO="alumnos.txt"
 
-#!correr interfaz.sh 
-
-#!correr interfaz.sh consolidado.sh
-
-#!correr interfaz.sh -d
 numero=""
 echo "1) Crear entorno"
 echo "2) Correr proceso de consolidar"
@@ -24,7 +20,13 @@ read numero
 case "$numero" in
 	1) echo "Elegiste la opción 1";;
 	2) echo "Elegiste la opción 2";;
-	3) echo "Elegiste la opción 3" ;;
+	3) 
+            if [ -f "$ARCHIVO" ]; then
+                sort -n "$ruta_archivo_salida"
+            else
+                echo "Error: El archivo de salida '$ARCHIVO no existe."
+            fi
+            ;;;;
 	4) echo "Elegiste la opción 4";;
 	5) echo "Elegiste la opción 5";;
 	6) echo "Elegiste la opción 6";;
