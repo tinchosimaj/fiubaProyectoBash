@@ -25,13 +25,13 @@ case "$numero" in
 		touch $HOME/EPNro1/salida
 		touch $HOME/EPNro1/procesado;;
 	2) echo "Elegiste la opción 2";;
-	3) 
+    3) 
             if [ -f "$ARCHIVO" ]; then
-                sort -n "$ruta_archivo_salida"
+                sort -n "$ARCHIVO"
             else
-                echo "Error: El archivo de salida '$ARCHIVO no existe."
+                echo "Error: El archivo de salida '$ARCHIVO' no existe."
             fi
-            ;;;;
+            ;;
 	4) echo "Elegiste la opción 4";;
 	5) echo "Elegiste la opción 5";;
 	6) echo "Elegiste la opción 6";;
