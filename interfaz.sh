@@ -18,7 +18,12 @@ echo -n "Ingrese un número: "
 read numero
 
 case "$numero" in
-	1) echo "Elegiste la opción 1";;
+	1) echo "Elegiste la opción 1"
+    echo "Elegiste la opción 1"
+		mkdir $HOME/EPNro1
+		touch $HOME/EPNro1/entrada
+		touch $HOME/EPNro1/salida
+		touch $HOME/EPNro1/procesado;;
 	2) echo "Elegiste la opción 2";;
 	3) 
             if [ -f "$ARCHIVO" ]; then
