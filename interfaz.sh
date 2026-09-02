@@ -1,6 +1,42 @@
 #!/bin/bash
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
+
+correr_proceso() {
+  local identificadorDelProceso="$HOME/EPNro1/.consolidar.pid"
+  local rutaDelScript="$HOME/EPNro1/consolidar.sh"
+
+  if [ ! -d "$HOME/EPNro1" ]; then
+    echo "Primero tenés que crear el entorno (opción 1)."
+    return
+  fi
+
+  if [ ! -f "$rutaDelScript" ]; then
+    echo "No se encontró consolidar.sh en EPNro1. Volvé a ejecutar la opción 1."
+    return
+  fi
+
+  if [ -z "$FILENAME" ]; then
+    echo "La variable de entorno FILENAME no está definida."
+    return
+  fi
+
+  if [ -f "$identificadorDelProceso" ]; then
+    pid_guardado=$(cat "$identificadorDelProceso")
+    if kill -0 "$pid_guardado" 2>/dev/null; then
+      echo "El proceso ya está corriendo (PID $pid_guardado)."
+      return
+    fi
+  fi
+
+  export FILENAME
+  chmod +x "$rutaDelScript"
+  nohup "$rutaDelScript" >/dev/null 2>&1 &
+  echo $! > "$identificadorDelProceso"
+
+  echo "Proceso lanzado en background (PID $!)."
+}
+
 numero=""
 
 echo "1) Crear entorno"
