@@ -58,7 +58,7 @@ until [ "$numero" = '7' ]; do
       chmod +x "$HOME/EPNro1/consolidar.sh"
       echo "Entorno creado en $HOME/EPNro1"
       ;;
-	  2)  echo "Elegiste la opción 2";;
+    2) correr_proceso ;;
     3) 
       if [ -z "$FILENAME" ]; then
         echo "La variable de entorno FILENAME no está definida."
