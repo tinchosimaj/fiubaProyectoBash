@@ -1,10 +1,6 @@
 #!/bin/bash
+ARCHIVO="alumnos.txt"
 
-#!correr interfaz.sh
-
-#!correr interfaz.sh consolidado.sh
-
-#!correr interfaz.sh -d
 numero=""
 echo "1) Crear entorno"
 echo "2) Correr proceso de consolidar"
@@ -27,17 +23,14 @@ case "$numero" in
 		touch $HOME/EPNro1/entrada
 		touch $HOME/EPNro1/salida
 		touch $HOME/EPNro1/procesado;;
-
-	2) echo "Elegiste la opción 2"
-		touch $HOME/EPNro1/consolidar.sh
-		bash consolidar.sh
-		while  ["$numero" =! '7']; do  #!/ podría ser solo true también?
-			for (archivo in $(ls $HOME/EPNro1/entrada ) do
-				cat archivo >> FILENAME.txt
-				
-done
-		;;
-	3) echo "Elegiste la opción 3" ;;
+	2) echo "Elegiste la opción 2";;
+    3) 
+            if [ -f "$ARCHIVO" ]; then
+                sort -n "$ARCHIVO"
+            else
+                echo "Error: El archivo de salida '$ARCHIVO' no existe."
+            fi
+            ;;
 	4) echo "Elegiste la opción 4";;
 	5) echo "Elegiste la opción 5";;
 	6) echo "Elegiste la opción 6";;
