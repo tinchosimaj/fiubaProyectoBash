@@ -3,6 +3,31 @@ ARCHIVO="alumnos.txt"
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+
+# Al ejecutar "bash interfaz.sh d":
+if [ "$1" = 'd' ]; then
+  #Caso 1: Directorio vacío + consolidar.sh inactivo
+  if [ $(ls $HOME/EPNro1 | wc -l) -eq 0 ]; then
+    echo "No se encontraron archivos por eliminar o finalizar"
+    exit
+  else
+    #Caso 2: Existe al menos 1 archivo en directorio + consolidar.sh en ejecución
+    if pgrep -f "consolidar.sh" > /dev/null; then
+      echo "Borrando contenidos dentro de EPNro1 y terminando procesos"
+      killall "consolidar.sh"
+      rm -r -f "$HOME/EPNro1"
+      mkdir "$HOME/EPNro1"
+      exit
+    else 
+      #Caso 3: Existe al menos 1 archivo en directorio + consolidar.sh inactivo
+      echo "Borrando contenidos dentro de EPNro1"
+      rm -r -f "$HOME/EPNro1"
+      mkdir "$HOME/EPNro1"
+      exit
+    fi
+  fi  
+fi
+
 correr_proceso() {
   local identificadorDelProceso="$HOME/EPNro1/.consolidar.pid"
   local rutaDelScript="$HOME/EPNro1/consolidar.sh"
@@ -54,7 +79,7 @@ until [ "$numero" = '7' ]; do
 
   case "$numero" in
     1)
-      mkdir -p "$HOME/EPNro1/entrada" "$HOME/EPNro1/salida" "$HOME/EPNro1/procesado"
+      mkdir -p "$HOME/EPNro1/entrada" "$HOME/EPNro1/salida" "$HOME/EPNro1/procesado" 
       cp "$SCRIPT_DIR/consolidar.sh" "$HOME/EPNro1/consolidar.sh"
       chmod +x "$HOME/EPNro1/consolidar.sh"
       echo "Entorno creado en $HOME/EPNro1"
@@ -84,7 +109,43 @@ until [ "$numero" = '7' ]; do
         fi
       fi
       ;;
-    5) echo "Elegiste la opción 5" ;;
+    5) 
+			if [[ -z "$FILENAME" ]]; then
+    echo "Error: la variable de entorno FILENAME no esta definida."
+else
+    archivo_5="salida/$FILENAME.txt"
+    if [[ ! -f "$archivo_5" ]]; then
+        echo "Error: El archivo '$archivo_5' no existe."
+    else
+        echo -n "Ingrese el numero de padron: "
+        read padron
+
+        encontrado=0
+
+        while read -r linea
+        do
+            p_numero=$(echo "$linea" | grep -oE '^[0-9]+')
+            email=$(echo "$linea" | grep -oE '[^ ]+@[^ ]+')
+            nota=$(echo "$linea" | grep -oE '[0-9]+$')
+            nombre=$(echo "$linea" | sed -E "s/^[0-9]+ //" | sed "s/ $email//" | sed -E "s/ [0-9]+$//")
+
+            if [[ "$p_numero" == "$padron" ]]; then
+                echo "Padron: $p_numero"
+                echo "Nombre y Apellido: $nombre"
+                echo "Email: $email"
+                echo "Nota: $nota"
+                encontrado=1
+            fi
+        done < "$archivo_5"
+
+        if [[ "$encontrado" -eq 0 ]]; then
+            echo "No se encontro ningun alumno con ese padron"
+        fi
+    fi
+fi;;
+
+
+
     6) echo "Elegiste la opción 6" ;;
     7) echo "Saliendo del menú" ;;
     *) echo "Opción inválida. Ingrese un número del 1 al 7." ;;
