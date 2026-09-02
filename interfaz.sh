@@ -28,7 +28,15 @@ case "$numero" in
 		touch $HOME/EPNro1/salida
 		touch $HOME/EPNro1/procesado;;
 
-	2) echo "Elegiste la opción 2";;
+	2) echo "Elegiste la opción 2"
+		touch $HOME/EPNro1/consolidar.sh
+		bash consolidar.sh
+		while  ["$numero" =! '7']; do  #!/ podría ser solo true también?
+			for (archivo in $(ls $HOME/EPNro1/entrada ) do
+				cat archivo >> FILENAME.txt
+				
+done
+		;;
 	3) echo "Elegiste la opción 3" ;;
 	4) echo "Elegiste la opción 4";;
 	5) echo "Elegiste la opción 5";;
