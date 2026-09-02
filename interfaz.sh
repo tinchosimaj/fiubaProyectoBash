@@ -52,20 +52,25 @@ until [ "$numero" = '7' ]; do
   read numero
 
   case "$numero" in
-    1)
-      mkdir -p "$HOME/EPNro1/entrada" "$HOME/EPNro1/salida" "$HOME/EPNro1/procesado"
-      cp "$SCRIPT_DIR/consolidar.sh" "$HOME/EPNro1/consolidar.sh"
-      chmod +x "$HOME/EPNro1/consolidar.sh"
-      echo "Entorno creado en $HOME/EPNro1"
-      ;;
-	2) echo "Elegiste la opción 2";;
-    3) 
-            if [ -f "$ARCHIVO" ]; then
-                sort -n "$ARCHIVO"
-            else
-                echo "Error: El archivo de salida '$ARCHIVO' no existe."
-            fi
-            ;;
+  1)
+    mkdir -p "$HOME/EPNro1/entrada" "$HOME/EPNro1/salida" "$HOME/EPNro1/procesado"
+    cp "$SCRIPT_DIR/consolidar.sh" "$HOME/EPNro1/consolidar.sh"
+    chmod +x "$HOME/EPNro1/consolidar.sh"
+    echo "Entorno creado en $HOME/EPNro1"
+    ;;
+	2)  echo "Elegiste la opción 2";;
+  3) 
+    if [ -z "$FILENAME" ]; then
+      echo "La variable de entorno FILENAME no está definida."
+    else
+      ARCHIVO="$HOME/EPNro1/salida/$FILENAME.txt"
+        if [ -f "$ARCHIVO" ]; then
+          sort -n "$ARCHIVO"
+        else
+          echo "Error: El archivo de salida '$ARCHIVO' no existe."
+        fi
+      fi
+    ;;
 	4) echo "Elegiste la opción 4";;
 	5) echo "Elegiste la opción 5";;
 	6) echo "Elegiste la opción 6";;
