@@ -147,6 +147,7 @@ fi;;
 
 
     6) echo "Elegiste la opción 6" ;;
+      cat $HOME/EPNro1/procesado.log
     7) echo "Saliendo del menú" ;;
     *) echo "Opción inválida. Ingrese un número del 1 al 7." ;;
   esac
