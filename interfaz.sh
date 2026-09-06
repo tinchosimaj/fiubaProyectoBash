@@ -83,7 +83,9 @@ until [ "$numero" = '7' ]; do
         fi
       fi
       ;;
-	  5) echo "Elegiste la opción 5";;
+	  5) echo "Elegiste la opción 5"
+    bash "$SCRIPT_DIR/opcion5.sh"
+      ;;
 	  6) echo "Elegiste la opción 6";;
 	  7) echo "Saliendo del menú" ;;
 
