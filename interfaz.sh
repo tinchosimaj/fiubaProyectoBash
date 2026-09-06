@@ -2,6 +2,24 @@
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 
+if [ "$1" = "-d" ]; then
+  if [ ! -d "$HOME/EPNro1" ] || [ -z "$(ls -A "$HOME/EPNro1" 2>/dev/null)" ]; then
+    echo "No se encontraron archivos por eliminar o finalizar"
+    exit
+  fi
+
+  if pgrep -f "consolidar.sh" > /dev/null; then
+    echo "Borrando contenidos dentro de EPNro1 y terminando procesos"
+    killall "consolidar.sh"
+  else
+    echo "Borrando contenidos dentro de EPNro1"
+  fi
+
+  rm -rf "$HOME/EPNro1"
+  mkdir "$HOME/EPNro1"
+  exit
+fi
+
 correr_proceso() {
   local identificadorDelProceso="$HOME/EPNro1/.consolidar.pid"
   local rutaDelScript="$HOME/EPNro1/consolidar.sh"
@@ -37,17 +55,21 @@ correr_proceso() {
   echo "Proceso lanzado en background (PID $!)."
 }
 
+mostrar_menu() {
+  echo ""
+  echo "1) Crear entorno"
+  echo "2) Correr proceso de consolidar"
+  echo "3) Listado de alumnos por orden de padrón"
+  echo "4) Visualizar las 10 notas más altas"
+  echo "5) Solicitar datos por padrón"
+  echo "6) Visualizar logs"
+  echo "7) Salir"
+}
+
 numero=""
 
-echo "1) Crear entorno"
-echo "2) Correr proceso de consolidar"
-echo "3) Listado de alumnos por orden de padrón"
-echo "4) Visualizar las 10 notas más altas"
-echo "5) Solicitar datos por padrón"
-echo "6) Visualizar logs"
-echo "7) Salir"
-
 until [ "$numero" = '7' ]; do
+  mostrar_menu
   echo -n "Ingrese un número: "
   read numero
 
@@ -83,8 +105,49 @@ until [ "$numero" = '7' ]; do
         fi
       fi
       ;;
-    5) echo "Elegiste la opción 5" ;;
-    6) echo "Elegiste la opción 6" ;;
+    5)
+      if [ -z "$FILENAME" ]; then
+        echo "La variable de entorno FILENAME no está definida."
+      else
+        ARCHIVO="$HOME/EPNro1/salida/$FILENAME.txt"
+        if [ -f "$ARCHIVO" ]; then
+          echo -n "Ingrese el número de padrón: "
+          read padron
+
+          encontrado=0
+
+          while read -r linea; do
+            p_numero=$(echo "$linea" | grep -oE '^[0-9]+')
+            email=$(echo "$linea" | grep -oE '[^ ]+@[^ ]+')
+            nota=$(echo "$linea" | grep -oE '[0-9]+$')
+            nombre=$(echo "$linea" | sed -E "s/^[0-9]+ //" | sed "s/ $email//" | sed -E "s/ [0-9]+$//")
+
+            if [ "$p_numero" = "$padron" ]; then
+              echo "Padrón: $p_numero"
+              echo "Nombre y Apellido: $nombre"
+              echo "Email: $email"
+              echo "Nota: $nota"
+              encontrado=1
+            fi
+          done < "$ARCHIVO"
+
+          if [ "$encontrado" -eq 0 ]; then
+            echo "No se encontró ningún alumno con ese padrón."
+          fi
+        else
+          echo "Error: El archivo de salida '$ARCHIVO' no existe."
+        fi
+      fi
+      ;;
+    6)
+      echo "Elegiste la opción 6"
+      ARCHIVO_LOG="$HOME/EPNro1/procesado.log"
+      if [ -f "$ARCHIVO_LOG" ]; then
+        cat "$ARCHIVO_LOG"
+      else
+        echo "Aún no hay registros de log generados"
+      fi
+      ;;
     7) echo "Saliendo del menú" ;;
     *) echo "Opción inválida. Ingrese un número del 1 al 7." ;;
   esac
