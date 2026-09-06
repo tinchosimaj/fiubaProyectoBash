@@ -86,7 +86,14 @@ until [ "$numero" = '7' ]; do
 	  5) echo "Elegiste la opción 5"
     bash "$SCRIPT_DIR/opcion5.sh"
       ;;
-	  6) echo "Elegiste la opción 6";;
+	  6) echo "Elegiste la opción 6"
+        ARCHIVO_LOG="$HOME/EPNro1/procesado.log"
+        if [ -f "$ARCHIVO_LOG" ]; then
+            cat "$ARCHIVO_LOG"
+        else
+            echo "Aún no hay registros de log generados"
+        fi
+      ;;
 	  7) echo "Saliendo del menú" ;;
 
     *) 
