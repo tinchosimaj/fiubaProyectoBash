@@ -84,6 +84,7 @@ until [ "$numero" = '7' ]; do
       fi
       ;;
 	  5) echo "Elegiste la opción 5"
+    chmod +x "$SCRIPT_DIR/opcion5.sh"
     bash "$SCRIPT_DIR/opcion5.sh"
       ;;
 	  6) echo "Elegiste la opción 6"
