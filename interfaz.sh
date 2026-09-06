@@ -37,6 +37,12 @@ correr_proceso() {
   echo "Proceso lanzado en background (PID $!)."
 }
 
+if [ "$1" = "-d" ]; then
+    echo "eliminando los entornos"
+    rm -rf "$HOME/EPNro1"
+    exit 0
+fi
+
 numero=""
 
 echo "1) Crear entorno"
