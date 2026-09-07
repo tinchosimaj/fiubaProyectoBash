@@ -40,7 +40,7 @@ correr_proceso() {
   fi
 
   if [ -f "$identificadorDelProceso" ]; then
-    pid_guardado=$(cat "$identificadorDelProceso")
+    identificadorDelProceso_guardado=$(cat "$identificadorDelProceso")
     if kill -0 "$identificadorDelProceso_guardado" 2>/dev/null; then
       echo "El proceso ya está corriendo (PID $identificadorDelProceso_guardado)."
       return
